@@ -1,0 +1,24 @@
+{
+    "name": "diandian/resource",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Diandian",
+            "email": "jason@diandian.ink"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+      "psr-4": {
+         "Tools\\": "src/Tools/"
+     }
+  },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
+}
