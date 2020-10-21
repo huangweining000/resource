@@ -8,14 +8,19 @@
 
 namespace Tools\Bank;
 
+use Tools\Http\HttpService;
+
 class BankService
 {
 
     private $bankNameArr = [];
+    private $bankAppCode = '';
     public function __construct()
     {
         #银行名称数组
         $this->bankNameArr = require_once('BankName.php');
+        #银行卡APP_CODE
+        $this->bankAppCode = 'ad97e84018db44fabaf234991c86c72c';
     }
 
     /**
@@ -70,6 +75,36 @@ class BankService
             return $return_card_info;
         }else{
             return [];
+        }
+    }
+
+    /*
+ * 银行四要素 银行卡号&姓名&身份证号&银行预留手机号
+ * 购买地址 https://market.aliyun.com/products/57000002/cmapi028807.html?spm=5176.730005.productlist.d_cmapi028807.11963524N1HwjY&innerSource=search_%E9%93%B6%E8%A1%8C%E5%8D%A1%20%E5%9B%9B%E8%A6%81%E7%B4%A0#sku=yuncode2280700001
+ */
+    /**
+     * 银行卡四要素验证(阿里云市场购买的第三方验证接口，收费接口)
+     * @param $bank_card_number
+     * @param $idCard
+     * @param $mobile
+     * @param $name
+     * @return array
+     */
+    public function cardVerify($bank_card_number,$idCard,$mobile,$name){
+        //四要素验证
+        $host = "https://bcard3and4.market.alicloudapi.com";
+        $path = "/bankCheck4";
+        $headers = array();
+        array_push($headers, "Authorization:APPCODE " . $this->bankAppCode);
+        $querys = "accountNo=$bank_card_number&idCard=$idCard&mobile=$mobile&name=$name";
+        $url = $host . $path . "?" . $querys;
+
+        $out_put = HttpService::https_get($url,$headers);
+        $out_put_info = json_decode($out_put,1);
+        if($out_put_info&&$out_put_info['status']=="01"){#验证通过返回数组
+            return ['status'=>1,'msg'=>'银行卡验证通过','data'=>$out_put_info];
+        }else{#验证不通过，提醒信息
+            return ['status'=>0,'msg'=>'银行卡验证不通过','data'=>$out_put_info];
         }
     }
 }

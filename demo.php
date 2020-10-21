@@ -1,9 +1,6 @@
 <?php
 require_once './vendor/autoload.php';
 
-#二维码使用
-//use \Tools\QRCode;
-//QRCode::Hello();
 
 #地图使用
 //use Tools\Map\MapService;
