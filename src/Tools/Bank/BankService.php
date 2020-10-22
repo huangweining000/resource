@@ -14,13 +14,13 @@ class BankService
 {
 
     private $bankNameArr = [];
-    private $bankAppCode = '';
+    private $appCode = '';
     public function __construct()
     {
         #银行名称数组
         $this->bankNameArr = require_once('BankName.php');
         #银行卡APP_CODE
-        $this->bankAppCode = 'ad97e84018db44fabaf234991c86c72c';
+        $this->appCode = 'ad97e84018db44fabaf234991c86c72c';
     }
 
     /**
@@ -95,7 +95,7 @@ class BankService
         $host = "https://bcard3and4.market.alicloudapi.com";
         $path = "/bankCheck4";
         $headers = array();
-        array_push($headers, "Authorization:APPCODE " . $this->bankAppCode);
+        array_push($headers, "Authorization:APPCODE " . $this->appCode);
         $querys = "accountNo=$bank_card_number&idCard=$idCard&mobile=$mobile&name=$name";
         $url = $host . $path . "?" . $querys;
 
