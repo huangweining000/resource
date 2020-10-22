@@ -22,11 +22,11 @@ class IdCardService
     /**
      * 阿里云云市场 身份证图片识别信息
      * 购买地址 https://market.aliyun.com/products/57124001/cmapi010401.html?spm=a2c4g.11186623.2.7.VojbRu#sku=yuncode440100000
-     * @param $base64
+     * @param $fileBast64Data
      * @param $zf_type
      * @return bool|string
      */
-    public function verify($base64,$zf_type){
+    public function verify($fileBast64Data,$zf_type){
         #我的身份证 base64
 
         $url = "https://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json";
@@ -44,7 +44,7 @@ class IdCardService
             $request = array();
             $request["image"] = array(
                 "dataType" => 50,
-                "dataValue" => "$base64"
+                "dataValue" => "$fileBast64Data"
             );
 
             if(count($config) > 0){
@@ -56,7 +56,7 @@ class IdCardService
             $body = json_encode(array("inputs" => array($request)));
         }else{
             $request = array(
-                "image" => "$base64"
+                "image" => "$fileBast64Data"
             );
             if(count($config) > 0){
                 $request["configure"] = json_encode($config);

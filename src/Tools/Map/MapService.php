@@ -73,18 +73,5 @@ class MapService
         $calculatedDistance = $earthRadius * $stepTwo;
         return round($calculatedDistance, 2);
     }
-
-    /**距离米转换成单位（千米）
-     * @param $distance
-     * @return string
-     */
-    function distanceSwitchKM($distance){
-        if($distance<1000){
-            return $distance.'米';
-        }
-        if($distance>=1000){
-            $distance_km = $distance/1000;
-            return $distance_km.'千米';
-        }
-    }
+    
 }

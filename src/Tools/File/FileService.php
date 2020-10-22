@@ -16,20 +16,20 @@ class FileService
     public function __construct()
     {
         #文件MimeType
-        $mimeTypeArr       = require_once('mimeType.php');
+        $mimeTypeArr       = require_once('commonMimeType.php');
         $this->mimeTypeArr = array_flip($mimeTypeArr);
     }
 
     /**
      * 二进制上传
-     * @param $fileData
-     * @param $upload_directory
+     * @param $file_path
+     * @param $fileBast64Data
      * @return array
      */
-    public function uploadBinary($fileData, $upload_directory)
+    public function uploadBinary($file_path,$fileBast64Data)
     {
         #获取文件mimeType
-        list($fileTypeInfo, $fileData) = explode(',', $fileData);
+        list($fileTypeInfo, $fileData) = explode(',', $fileBast64Data);
         $mimeType = substr($fileTypeInfo, 5, -7);
         #判断文件mimeType
         if (!isset($this->mimeTypeArr[$mimeType])) {
@@ -37,10 +37,10 @@ class FileService
         }
 
         #整理保存的图片路径
-        $saveFilePath = $upload_directory . '/' . uniqid() . '.' . $this->mimeTypeArr[$mimeType]; #图片路径
+        $saveFilePath = $file_path . uniqid() . '.' . $this->mimeTypeArr[$mimeType]; #图片路径
 
         #创建文件夹
-        !is_dir($upload_directory) && mkdir($upload_directory, 0777, 1);
+        !is_dir($file_path) && mkdir($file_path, 0777, 1);
 
         $saveBool = file_put_contents($saveFilePath, base64_decode($fileData));
 
@@ -76,7 +76,7 @@ class FileService
         $count  = 0;
         while (!feof($fp) && ($fileSize - $count > 0)) {
             $data  = fread($fp, $buffer);
-            $count += $data;//计数
+            $count += $buffer;//计数
             echo $data;//传数据给浏览器端
         }
         fclose($fp);
